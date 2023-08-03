@@ -116,3 +116,48 @@ exports.login = async (req, res) => {
     res.status(500).json({ status: false, message: "Some error occurred while logging in." });
   }
 };
+
+
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    // Retrieve all users from the database
+    User.findAll((err, users) => {
+      if (err) {
+        res.status(500).json({ status: false, message: "Error occurred while retrieving users data." });
+        return;
+      }
+
+      res.json({ status: true, users });
+    });
+  } catch (err) {
+    res.status(500).json({ status: false, message: "Some error occurred while retrieving users data." });
+  }
+};
+
+
+exports.getUserById = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Find the user by their ID in the database
+    User.findById(userId, (err, user) => {
+      if (err) {
+        res.status(500).json({ status: false, message: "Error occurred while retrieving user data." });
+        return;
+      }
+
+      if (!user) {
+        res.status(404).json({ status: false, message: "User not found." });
+        return;
+      }
+
+      res.json({ status: true, user });
+    });
+  } catch (err) {
+    res.status(500).json({ status: false, message: "Some error occurred while retrieving user data." });
+  }
+};
+
+
+

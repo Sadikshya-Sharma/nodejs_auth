@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
  
 app.use(cors());
 
-app.use('/api', authRoutes);
+app.use('/', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

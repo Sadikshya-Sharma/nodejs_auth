@@ -7,6 +7,10 @@ class User {
     this.username = user.username;
     this.email = user.email;
     this.password = user.password;
+    this.image = user.image;
+    this.address = user.address;
+    this.contact_num = user.contact_num;
+
   }
 
   static isValidEmail(email) {
@@ -31,8 +35,8 @@ class User {
           return;
         }
 
-        const insertedId = res.insertId;
-        const insertedUser = new User({ id: insertedId, ...user });
+        
+        const insertedUser = new User({...user });
 
         console.log("created user: ", insertedUser);
         callback(null, insertedUser);
@@ -61,6 +65,48 @@ class User {
       callback(null, user);
     });
   }
+
+
+  static async findAll(callback) {
+    const query = "SELECT id, username, email FROM users";
+
+    conn.query(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(err, null);
+        return;
+      }
+
+      const users = res.map((userData) => new User(userData));
+      callback(null, users);
+    });
+  }
+
+
+
+  static async findById(id, callback) {
+    const query = "SELECT id, username, email FROM users WHERE id = ?";
+
+    conn.query(query, [id], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(err, null);
+        return;
+      }
+
+      if (res.length === 0) {
+        callback(null, null);
+        return;
+      }
+
+      const user = new User(res[0]);
+      callback(null, user);
+    });
+  }
+
+  
+
+
 }
 
 module.exports = User;
