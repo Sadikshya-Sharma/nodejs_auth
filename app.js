@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
+const path = require('path'); // Require the 'path' module
+
+// Serve static files from the 'assets' directory
+
 
 const authRoutes = require('./routes/userRoute');
 
@@ -24,6 +28,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });
+app.use(express.static(path.join(__dirname, 'assets/images')));
+
 
 module.exports = app;
 
