@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const userController=require('../controllers/userController');
 const checkAuth = require('../middleware/check_auth');
+const forgetValidation = require('../helpers/validation');
 
 
 
@@ -39,7 +40,10 @@ router.get('/users/:id', checkAuth, userController.getUserById);
 
 router.patch('/users/:id', upload.single('userimage'), userController.updateUser);
 
-// router.post('forget-password', userController.forgetPassword);
+router.get('/get-user', checkAuth, userController.getLoggedInUser );
 
 
+router.post('/forget-password', userController.forgetpassword);
+
+router.post('/reset-password', userController.resetPassword);
 module.exports= router;
